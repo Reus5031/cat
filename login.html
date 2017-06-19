@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html ng-app="loginApp">
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<link rel="stylesheet" href="../css/login.css" />
+	</head>
+	<body>
+		<div class="main">
+			<div class="login-container" ng-controller="loginController">
+				<form name="loginForm" ng-submit="login()">
+				<ul class="login-list">
+					<li class="login-item"><h2 class="login-title">辽宁省就业转换管理系统</h2></li>
+					<li class="login-item">
+						<input type="text"  ng-model="username" ng-pattern="/^[0-9a-zA-Z]{3,15}$/" required="required" class="input" placeholder="用户名" autocomplete="off" />
+					</li>
+					<li class="login-item">
+						<input type="password" ng-model="password" ng-pattern="/[0-9a-zA-Z]{6,15}/" required="required" class="input"  placeholder="密码"  autocomplete="off"/>
+					</li>
+					<li class="login-item">
+						<input type="button" class="login-btn" value="登录" />
+					</li>
+					<li class="login-item">
+						<a class="recover-link" ng-click="showRecover()">忘记密码，执行找回</a>
+					</li>
+				</ul>
+				</form>
+			</div>
+			<div class="recover-container" ng-controller="recoverController">
+				<h2 class="recover-title">找回密码</h2>
+				<div class="step-container">
+					<div class="step-bar">
+						<ul class="step-list">
+							<li class="step {{step>=1?'step-active':''}}">
+								<div class="ball">1</div>
+								<div class="desc">验证个人资料</div>
+							</li>
+							<li class="step  {{step>=2?'step-active':''}}">
+									<div class="ball">2</div>
+								<div class="desc">验证账号资料</div>
+							</li>
+							<li class="step  {{step>=3?'step-active':''}}">
+									<div class="ball">3</div>
+								<div class="desc">设置新密码</div>
+							</li>
+							<li class="step  {{step==4?'step-active':''}}">
+									<div class="ball">4</div>
+								<div class="desc">完成</div>
+							</li>
+						</ul>
+					</div> 
+					<div class="step-content">
+						<!--这里添加margin-left和less中添加动画就可以切换面板了-->
+						<div class="step-wrapper" style="margin-left:  -{{(step-1)*730/16}}rem;">
+							<div class="step">
+							   <h3 class="step-title">个人基本资料</h3>
+							   <form name="step1" ng-submit="next($event)">
+							   <ul class="step-list">
+							   	<li class="step-item">
+							   		<label for="name">真实姓名:</label>
+							   		<input type="text"   id="name" ng-model="name" class="input" placeholder="真实姓名" autocomplete="off" required="required" ng-pattern="/^[\u4e00-\u9fa5]{2,4}$/" tabindex="-1"/>
+							   		<input type="submit" class="next" value="下一步" tabindex="-1" />
+							   	</li>
+							   	<li class="step-item">
+							   		<label for="pid">身份证号:</label>
+							   		<input type="text"  id="pid" ng-model="pid" class="input" placeholder="身份证号" autocomplete="off" required="required" ng-pattern="/^[1-9]\d{17}$|^[1-9]\d{16}x$/" tabindex="-1"/>
+							   		<input type="button" class="cancel" value="取消" ng-click="showLogin()"  tabindex="-1"/>
+							   	</li>
+							   	<li class="step-item">
+							   		<label for="orgnization">组织机构:</label>
+							   		<input type="text"  id="orgnization" ng-model="organization" class="input"placeholder="组织机构" autocomplete="off" required="required" ng-pattern="/^[a-zA-Z0-9\u4e00-\u9fa5]{4,40}$/" tabindex="-1"/>
+							   		
+							   	</li>
+							   </ul>
+							   </form>
+							   
+							</div>
+							<div class="step">
+								  <h3 class="step-title">账号基本资料</h3>
+							   <form name="step2" ng-submit="next($event)">
+							   <ul class="step-list">
+							   	<li class="step-item">
+							   		<label for="username">用户名:</label>
+							   		<input type="text"   id="username" ng-model="username" class="input" placeholder="用户名" required="required" autocomplete="off" ng-pattern="/^[0-9-zA-Z]{3,15}$/" tabindex="-1"/>
+							   		<input type="submit" class="next" value="下一步" tabindex="-1" />
+							   	</li>
+							   	<li class="step-item">
+							   		<label for="email">电子信箱:</label>
+							   		<input type="email"  id="email" ng-model="email" class="input" placeholder="电子信箱" required="required" autocomplete="off" tabindex="-1"/>
+							   		<input type="button" class="cancel" value="取消" ng-click="showLogin()" tabindex="-1"/>
+							   	</li>
+							   	<li class="step-item">
+							   		<label for="tel">手机号码:</label>
+							   		<input type="text"  id="tel" ng-model="tel" class="input" placeholder="手机号码" required="required" autocomplete="off" ng-pattern="/^[1-9]\d{10}$/"tabindex="-1"/>
+							   		
+							   	</li>
+							   </ul>
+							   </form>
+							</div>
+							<div class="step">
+								  <h3 class="step-title">重新设置密码</h3>
+							   <form name="step3" ng-submit="next($event)">
+							   <ul class="step-list">
+							   	<li class="step-item">
+							   		<label for="password">新密码:</label>
+							   		<input type="password"   id="password" ng-model="password" class="input"  required="required" placeholder="新密码" autocomplete="off" ng-pattern="/^[0-9a-zA-Z]{6,15}$/" tabindex="-1"/>
+							   		<input type="submit" class="next" value="下一步" tabindex="-1" />
+							   	</li>
+							   	<li class="step-item">
+							   		<label for="again">再次输入:</label>
+							   		<input type="password"  id="again" ng-model="again" class="input" placeholder="再次输入" autocomplete="off" required="required" ng-pattern="/^[0-9a-zA-Z]{6,15}$/" tabindex="-1"/>
+							   		<input type="button" class="cancel" value="取消"  ng-click="showLogin()" tabindex="-1"/>
+							   	</li>
+							   	<li class="step-item">
+							   		<label for="code">验证码:</label>
+							   		<input type="text"  id="code" ng-model="code" class="input" autocomplete="off" required="required" ng-pattern="/^[0-9a-zA-Z]{6}$/" tabindex="-1"/>
+							   		
+							   	</li>
+							   </ul>
+							   </form>
+							</div>
+							<div class="step">
+							<h3 class="step-title">密码设置成功</h3>
+							<ul class="step-list">
+								<li class="step-item success"><span id="sec">10</span>秒后自动跳转到登录界面</li>
+								<li class="step-item success"><input type="button"  value="跳转登录界面" class="success-btn" tabindex="-1"/></li>
+							</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/jquery-3.0.0.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/angular.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/login.js" type="text/javascript" charset="utf-8"></script>
+	</body>
+</html>
